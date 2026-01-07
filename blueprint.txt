@@ -1,0 +1,3 @@
+npx drizzle-kit push   //push schema to database
+
+npx drizzle-kit studio    // run database locally
