@@ -53,7 +53,7 @@ const WebsiteForm = () => {
             alert(result?.data?.message); //domain not beling to you
         }
 
-        console.log(result.data);
+        // console.log(result.data);
         setLoading(false);
     }
 
