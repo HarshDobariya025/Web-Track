@@ -1,7 +1,7 @@
 import { db } from "@/configs/db";
 import { websitesTable } from "@/configs/schema";
 import { currentUser } from "@clerk/nextjs/server";
-import { and, eq } from "drizzle-orm";
+import { and, desc, eq } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req:NextRequest){
@@ -22,6 +22,16 @@ export async function POST(req:NextRequest){
         enableLocalhostTracking: enableLocalhostTracking,
         userEmail: user?.primaryEmailAddress?.emailAddress as string,
     }).returning();
+
+    return NextResponse.json(result);
+}
+
+export async function GET(req:NextRequest){
+    const user=await currentUser();
+
+    const result= await db.select().from(websitesTable)
+    .where( eq(websitesTable.userEmail,user?.primaryEmailAddress?.emailAddress as string))
+    .orderBy(desc(websitesTable.id));
 
     return NextResponse.json(result);
 }
