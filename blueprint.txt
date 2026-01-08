@@ -1,3 +1,7 @@
 npx drizzle-kit push   //push schema to database
 
 npx drizzle-kit studio    // run database locally
+
+
+//npm library
+npm i ua-parser-js    // get all info about devics(mobile, crom, desktop, ...)

@@ -37,6 +37,14 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
+        <head>
+          <script
+            defer
+            data-website-id='b54818fd-45d1-480f-a676-c6e30864f414'
+            data-domain='https://localhost:3000'
+            src="http://localhost:3000/analytics.js"
+          ></script>
+        </head>
         <body
           className={AppFont.className}
         >
