@@ -51,6 +51,7 @@ export async function POST(req:NextRequest){
             city: geoInfo.city,
             region: geoInfo.regionName,
             country: geoInfo.country,
+            countryCode: geoInfo.countryCode,
             ipAddress: ip || '',
             RefParams: body.RefParams,
         }).returning();
