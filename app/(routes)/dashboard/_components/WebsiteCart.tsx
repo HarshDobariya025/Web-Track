@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
-import { WebsiteType } from '@/configs/type'
+import { WebsiteInfoType, WebsiteType } from '@/configs/type'
 import { Globe } from 'lucide-react'
 import React from 'react'
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts"
@@ -13,14 +13,6 @@ import {
   type ChartConfig,
 } from "@/components/ui/chart"
 
-const chartData = [
-  { month: "January", desktop: 186, mobile: 80 },
-  { month: "February", desktop: 305, mobile: 200 },
-  { month: "March", desktop: 237, mobile: 120 },
-  { month: "April", desktop: 73, mobile: 190 },
-  { month: "May", desktop: 209, mobile: 130 },
-  { month: "June", desktop: 214, mobile: 140 },
-]
 
 const chartConfig = {
   desktop: {
@@ -34,10 +26,23 @@ const chartConfig = {
 } satisfies ChartConfig
 
 type Props={
-    website:WebsiteType
+    websiteInfo:WebsiteInfoType;
 }
 
-const WebsiteCart = ({website}:Props) => {
+const WebsiteCart = ({websiteInfo}:Props) => {
+  const hourlyData= websiteInfo?.analytics?.hourlyVisitors;
+
+  const chartData = hourlyData?.length==1?
+  [
+    {
+      ...hourlyData[0],
+      hour: Number(hourlyData[0].hour)-1>=0? Number(hourlyData[0].hour)-1 : 0,
+      count:0,
+      hourLabel: `${Number(hourlyData[0].hour)-1} AM/PM`,
+    },
+    hourlyData[0],
+  ]:hourlyData;
+
   return (
     <div>
         <Card>
@@ -45,21 +50,21 @@ const WebsiteCart = ({website}:Props) => {
                 <CardTitle>
                     <div className="flex items-center gap-1">
                         <Globe className="h-10 w-10 p-2 rounded-md " />
-                        <h2 className="font-bold text-lg">{website.domain.replace('https://','')}</h2>
+                        <h2 className="font-bold text-lg">{websiteInfo?.website?.domain.replace('https://','')}</h2>
                     </div>
                 </CardTitle>
             </CardHeader>
             <CardContent>
-                <ChartContainer config={chartConfig} className="max-h-30 w-full">
+                <ChartContainer config={chartConfig} className="max-h-40 w-full">
                     <AreaChart
                         accessibilityLayer
                         data={chartData}
                         margin={{
-                        left: 12,
-                        right: 12,
+                          left: 12,
+                          right: 12,
                         }}
                     >
-                        <CartesianGrid vertical={false} />
+                        {/* <CartesianGrid vertical={false} /> */}
                         {/* <XAxis
                         dataKey="month"
                         tickLine={false}
@@ -73,19 +78,18 @@ const WebsiteCart = ({website}:Props) => {
                         /> */}
                         
                         <Area
-                        dataKey="desktop"
+                        dataKey="count"
                         type="natural"
                         fill="var(--color-primary)"
                         fillOpacity={0.4}
                         stroke="var(--color-primary)"
-                        stackId="a"
                         strokeWidth={2}
                         />
                         {/* <ChartLegend content={<ChartLegendContent />} />   */}
                     </AreaChart>
                 </ChartContainer>
 
-                <h2 className="text-sm mt-1"><strong>24</strong>Visiters</h2>
+                <h2 className="text-sm mt-1"><strong>{websiteInfo?.analytics?.last24hVisitors}</strong> Visiters</h2>
             </CardContent>
         </Card>
     </div>
