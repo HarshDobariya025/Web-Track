@@ -8,6 +8,7 @@ import Link from 'next/link';
 import React, { useEffect, useState } from 'react'
 import WebsiteCart from './_components/WebsiteCart';
 import { Skeleton } from '@/components/ui/skeleton';
+import { format } from 'date-fns-tz/format';
 
 const Dashboard = () => {
     const [websiteList, setWebsiteList] = useState<WebsiteInfoType[]>([]);
@@ -19,7 +20,8 @@ const Dashboard = () => {
 
     const GetUserWebsite = async () => {
         setLoading(true);
-        const result = await axios.get('/api/website');
+        const today = format(new Date(), 'yyyy-MM-dd');
+        const result = await axios.get('/api/website?from=' + today + '&to=' + today);
         setWebsiteList(result?.data);
         // console.log(result.data);
         setLoading(false);

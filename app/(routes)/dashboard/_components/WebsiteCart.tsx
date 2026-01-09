@@ -49,19 +49,21 @@ const WebsiteCart = ({websiteInfo}:Props) => {
             <CardHeader>
                 <CardTitle>
                     <div className="flex items-center gap-1">
-                        <Globe className="h-10 w-10 p-2 rounded-md " />
+                        <Globe className="h-9 w-9 p-2 rounded-md " />
                         <h2 className="font-bold text-lg">{websiteInfo?.website?.domain.replace('https://','')}</h2>
                     </div>
                 </CardTitle>
             </CardHeader>
             <CardContent>
-                <ChartContainer config={chartConfig} className="max-h-40 w-full">
+                <ChartContainer config={chartConfig} className="max-h-30 w-full">
                     <AreaChart
                         accessibilityLayer
                         data={chartData}
                         margin={{
                           left: 12,
                           right: 12,
+                          top: 12,
+                          bottom: 12,
                         }}
                     >
                         {/* <CartesianGrid vertical={false} /> */}
@@ -71,17 +73,17 @@ const WebsiteCart = ({websiteInfo}:Props) => {
                         axisLine={false}
                         tickMargin={8}
                         tickFormatter={(value) => value.slice(0, 3)}
-                        /> */}+
-                        {/* <ChartTooltip
+                        /> */}
+                        <ChartTooltip
                         cursor={false}
                         content={<ChartTooltipContent indicator="line" />}
-                        /> */}
+                        />
                         
                         <Area
                         dataKey="count"
                         type="natural"
                         fill="var(--color-primary)"
-                        fillOpacity={0.4}
+                        fillOpacity={0.3}
                         stroke="var(--color-primary)"
                         strokeWidth={2}
                         />
@@ -89,7 +91,7 @@ const WebsiteCart = ({websiteInfo}:Props) => {
                     </AreaChart>
                 </ChartContainer>
 
-                <h2 className="text-sm mt-1"><strong>{websiteInfo?.analytics?.last24hVisitors}</strong> Visiters</h2>
+                <h2 className="text-sm mt-1"><strong>{websiteInfo?.analytics?.totalVisitors}</strong> Visiters</h2>
             </CardContent>
         </Card>
     </div>
