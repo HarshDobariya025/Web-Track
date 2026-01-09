@@ -112,23 +112,23 @@ export async function GET(req: NextRequest) {
         .where(
             websiteId
                 ? and(
-                      eq(
-                          websitesTable.userEmail,
-                          user.primaryEmailAddress!.emailAddress
-                      ),
-                      eq(websitesTable.websiteId, websiteId)
-                  )
+                    eq(
+                        websitesTable.userEmail,
+                        user.primaryEmailAddress!.emailAddress
+                    ),
+                    eq(websitesTable.websiteId, websiteId)
+                )
                 : eq(
-                      websitesTable.userEmail,
-                      user.primaryEmailAddress!.emailAddress
-                  )
+                    websitesTable.userEmail,
+                    user.primaryEmailAddress!.emailAddress
+                )
         )
         .orderBy(sql`${websitesTable.id} DESC`);
 
     const result: any[] = [];
 
     /* ---------------------------------------------
-       FORMATTERS
+       FORMATTERS (UNCHANGED)
     --------------------------------------------- */
     const formatSimple = (map: Record<string, number>) =>
         Object.entries(map).map(([name, uv]) => ({ name, uv }));
@@ -208,13 +208,14 @@ export async function GET(req: NextRequest) {
                     eq(pageViewTable.websiteId, site.websiteId),
                     ...(fromUnix && toUnix
                         ? [
-                              gte(sql`${pageViewTable.entryTime}::bigint`, fromUnix),
-                              lte(sql`${pageViewTable.entryTime}::bigint`, toUnix),
-                          ]
+                            gte(sql`${pageViewTable.entryTime}::bigint`, fromUnix),
+                            lte(sql`${pageViewTable.entryTime}::bigint`, toUnix),
+                        ]
                         : [])
                 )
             );
 
+        /* ---------- UNIQUE VISITORS ---------- */
         const makeSetMap = () => ({} as Record<string, Set<string>>);
 
         const countryVisitors = makeSetMap();
@@ -233,21 +234,11 @@ export async function GET(req: NextRequest) {
         const regionCountryMap: Record<string, string> = {};
 
         const uniqueVisitors = new Set<string>();
-
-        const last24hVisitorsSet = new Set<string>();
-        const nowUnix = Math.floor(Date.now() / 1000);
-        const last24hUnix = nowUnix - 24 * 60 * 60;
-
         let totalActiveTime = 0;
 
         views.forEach(v => {
             if (!v.visitorId) return;
-
             uniqueVisitors.add(v.visitorId);
-
-            if (v.entryTime && Number(v.entryTime) >= last24hUnix) {
-                last24hVisitorsSet.add(v.visitorId);
-            }
 
             if (v.totalActiveTime && v.totalActiveTime > 0) {
                 totalActiveTime += v.totalActiveTime;
@@ -287,54 +278,62 @@ export async function GET(req: NextRequest) {
             Object.fromEntries(Object.entries(map).map(([k, v]) => [k, v.size]));
 
         const totalVisitors = uniqueVisitors.size;
-        const last24hVisitors = last24hVisitorsSet.size;
         const totalSessions = views.length;
         const avgActiveTime =
             totalVisitors > 0 ? Math.round(totalActiveTime / totalVisitors) : 0;
 
-        /* ---------- HOURLY VISITORS (FIXED) ---------- */
-        const hourlyBucket: Record<
-            string,
-            { date: string; hour: number; visitors: Set<string> }
-        > = {};
+        /* ---------- HOURLY VISITORS ---------- */
+        const hourlyMap: Record<string, Set<string>> = {};
+        const hourlyVisitors: any[] = [];
 
-        views.forEach(v => {
-            if (!v.entryTime || !v.visitorId) return;
+        if (views.length > 0) {
+            const start = fromUnix
+                ? new Date(fromUnix * 1000)
+                : new Date(Math.min(...views.map(v => Number(v.entryTime) * 1000)));
 
-            const local = toZonedTime(
-                new Date(Number(v.entryTime) * 1000),
-                siteTZ
-            );
+            const end = toUnix
+                ? new Date(toUnix * 1000)
+                : new Date(Math.max(...views.map(v => Number(v.entryTime) * 1000)));
 
-            const date = formatDateInTZ(local, siteTZ);
-            const hour = local.getHours();
-            const key = `${date}-${hour}`;
+            let cursor = new Date(start);
 
-            hourlyBucket[key] ??= {
-                date,
-                hour,
-                visitors: new Set(),
-            };
+            while (cursor <= end) {
+                const local = toZonedTime(cursor, siteTZ);
+                const date = formatDateInTZ(local, siteTZ);
+                const hour = local.getHours();
+                const key = `${date}-${hour}`;
 
-            hourlyBucket[key].visitors.add(v.visitorId);
-        });
+                hourlyVisitors.push({
+                    date,
+                    hour,
+                    hourLabel: local.toLocaleString("en-US", {
+                        hour: "numeric",
+                        hour12: true,
+                        timeZone: siteTZ,
+                    }),
+                    count: 0,
+                });
 
-        const hourlyVisitors = Object.values(hourlyBucket)
-            .map(h => ({
-                date: h.date,
-                hour: h.hour,
-                hourLabel: new Date(
-                    `${h.date}T${String(h.hour).padStart(2, "0")}:00`
-                ).toLocaleString("en-US", {
-                    hour: "numeric",
-                    hour12: true,
-                    timeZone: siteTZ,
-                }),
-                count: h.visitors.size,
-            }))
-            .sort((a, b) =>
-                a.date === b.date ? a.hour - b.hour : a.date.localeCompare(b.date)
-            );
+                hourlyMap[key] = new Set();
+                cursor.setHours(cursor.getHours() + 1);
+            }
+
+            views.forEach(v => {
+                if (!v.entryTime || !v.visitorId) return;
+
+                const local = toZonedTime(
+                    new Date(Number(v.entryTime) * 1000),
+                    siteTZ
+                );
+
+                const date = formatDateInTZ(local, siteTZ);
+                hourlyMap[`${date}-${local.getHours()}`]?.add(v.visitorId);
+            });
+
+            hourlyVisitors.forEach(h => {
+                h.count = hourlyMap[`${h.date}-${h.hour}`]?.size || 0;
+            });
+        }
 
         /* ---------- DAILY VISITORS ---------- */
         const dailyMap: Record<string, Set<string>> = {};
@@ -362,7 +361,6 @@ export async function GET(req: NextRequest) {
         result.push({
             website: site,
             analytics: {
-                last24hVisitors,
                 totalVisitors,
                 totalSessions,
                 totalActiveTime,
@@ -394,6 +392,8 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json(result);
 }
+
+
 
 
 
