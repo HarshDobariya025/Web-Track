@@ -1,0 +1,58 @@
+"use client"
+
+import { WebsiteInfoType, WebsiteType } from '@/configs/type';
+import axios from 'axios';
+import { useParams } from 'next/navigation'
+import React, { useEffect, useState } from 'react'
+import FormInputs from './_components/FormInputs';
+import PageViewAnalytics from './_components/PageViewAnalytics';
+import { format } from 'date-fns';
+
+
+
+
+const WebsiteDetail = () => {
+    const {websiteId}=useParams();
+    const [websiteList,setWebsiteList]=useState<WebsiteType[]>([]);
+    const [websiteInfo,setWebsiteInfo]=useState<WebsiteInfoType|null>();
+    const [loading,setLoading]=useState<boolean>(false)
+    const [formData,setFormData]=useState<any>({
+        analyticsType:'hourly',
+        fromDate: new Date(),
+        toDate: new Date()
+    });
+
+    useEffect(() => {
+        GetWebsiteList();
+        GetWebsiteAnalyticalDetail();
+    },[]);
+
+    const GetWebsiteList = async () => {
+        const websites=await axios.get('/api/website?websiteOnly=true');
+        console.log('Websites: ',websites.data);
+        setWebsiteList(websites?.data);
+    }
+
+    const GetWebsiteAnalyticalDetail = async () => {
+        setLoading(true);
+        const fromDate=format(formData?.fromDate,'yyyy-MM-dd');
+        const toDate=formData?.toDate ? format(formData?.toDate,'yyyy-MM-dd') : fromDate;
+        const websiteResult=await axios.get(`/api/website?websiteId=${websiteId}&from=${fromDate}&to=${toDate}`);
+        console.log('WebsiteResult: ',websiteResult?.data);
+        setWebsiteInfo(websiteResult?.data[0]);
+        setLoading(false);
+    }
+
+    useEffect(() => {
+      GetWebsiteAnalyticalDetail();
+    },[formData?.fromDate, formData?.toDate]);
+
+  return (
+    <div className="mt-10">
+      <FormInputs websiteList={websiteList} setFormData={setFormData} setReloadData={() => GetWebsiteAnalyticalDetail()}/>
+      <PageViewAnalytics websiteInfo={websiteInfo} loading={loading} analyticType={formData?.analyticsType}/>
+    </div>
+  )
+}
+
+export default WebsiteDetail

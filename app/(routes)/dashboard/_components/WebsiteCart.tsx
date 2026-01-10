@@ -12,6 +12,7 @@ import {
   ChartTooltipContent,
   type ChartConfig,
 } from "@/components/ui/chart"
+import Link from 'next/link'
 
 
 const chartConfig = {
@@ -44,7 +45,7 @@ const WebsiteCart = ({websiteInfo}:Props) => {
   ]:hourlyData;
 
   return (
-    <div>
+    <Link href={`/dashboard/website/${websiteInfo?.website?.websiteId}`}>
         <Card>
             <CardHeader>
                 <CardTitle>
@@ -83,9 +84,9 @@ const WebsiteCart = ({websiteInfo}:Props) => {
                         dataKey="count"
                         type="natural"
                         fill="var(--color-primary)"
-                        fillOpacity={0.3}
+                        fillOpacity={0}
                         stroke="var(--color-primary)"
-                        strokeWidth={2}
+                        strokeWidth={3}
                         />
                         {/* <ChartLegend content={<ChartLegendContent />} />   */}
                     </AreaChart>
@@ -94,7 +95,7 @@ const WebsiteCart = ({websiteInfo}:Props) => {
                 <h2 className="text-sm mt-1"><strong>{websiteInfo?.analytics?.totalVisitors}</strong> Visiters</h2>
             </CardContent>
         </Card>
-    </div>
+    </Link>
   )
 }
 
