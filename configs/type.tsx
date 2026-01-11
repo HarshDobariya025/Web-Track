@@ -59,3 +59,18 @@ export type RegionAndDeviceType = {
 }
 
 export const IMAGE_URL_FOR_DOMAINS = "https://icons.duckduckgo.com/ip3/<domain>.com.ico";
+
+export type LiveUserType = {
+    visitorId: string; //needed
+    websiteId: string; //needed
+    last_seen: string;
+    city: string;
+    region: string;
+    country: string;
+    countryCode: string;
+    lat: string;
+    lng: string;
+    device: string;
+    os: string;
+    browser: string;
+}

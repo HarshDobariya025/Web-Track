@@ -23,10 +23,11 @@ const chartConfig = {
 type props={
     websiteInfo:WebsiteInfoType | undefined | null,
     loading:boolean,
-    analyticType:string
+    analyticType:string,
+    liveUserCount:number | undefined;
 }
 
-const PageViewAnalytics = ({websiteInfo,loading,analyticType}:props) => {
+const PageViewAnalytics = ({websiteInfo,loading,analyticType,liveUserCount}:props) => {
     const webAnalytics=websiteInfo?.analytics;
 
   return (
@@ -42,7 +43,7 @@ const PageViewAnalytics = ({websiteInfo,loading,analyticType}:props) => {
                     <Separator orientation='vertical' className='h-12'/>
                     <LabelCountItem label="Average Active Time" value={(Number(webAnalytics?.avgActiveTime)/60).toFixed(1)+"min"}/>
                     <Separator orientation='vertical' className='h-12'/>
-                    <LabelCountItem label="Live Users" value={"10"}/>
+                    <LabelCountItem label="Live Users" value={liveUserCount ?? 0}/>
                 </CardContent>
 
                 <CardContent className='mt-5 p-5'>
