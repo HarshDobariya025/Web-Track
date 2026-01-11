@@ -18,7 +18,15 @@ export type AnalyticsType = {
     totalSessions: number;
     totalVisitors: number;
     hourlyVisitors: HourlyVisitorsType[],
-    dailyVisitors: DailyUsersType[]
+    dailyVisitors: DailyUsersType[],
+    referrals: ReferralsType[],
+    refParams: RefParamsType[];
+    countries: RegionAndDeviceType[];
+    cities: RegionAndDeviceType[];
+    regions: RegionAndDeviceType[];
+    devices: RegionAndDeviceType[];
+    os: RegionAndDeviceType[];
+    browsers: RegionAndDeviceType[];
 }
 
 export type HourlyVisitorsType = {
@@ -32,3 +40,22 @@ export type DailyUsersType = {
     date: string;
     count: number;
 }
+
+export type ReferralsType = {
+    domainName: string;
+    name: string;
+    uv: number;
+}
+
+export type RefParamsType = {
+    name: string;
+    uv: number;
+}
+
+export type RegionAndDeviceType = {
+    image: string;
+    name: string;
+    uv: number;
+}
+
+export const IMAGE_URL_FOR_DOMAINS = "https://icons.duckduckgo.com/ip3/<domain>.com.ico";

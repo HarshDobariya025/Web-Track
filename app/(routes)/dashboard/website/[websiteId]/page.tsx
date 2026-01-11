@@ -7,8 +7,9 @@ import React, { useEffect, useState } from 'react'
 import FormInputs from './_components/FormInputs';
 import PageViewAnalytics from './_components/PageViewAnalytics';
 import { format } from 'date-fns';
-
-
+import SourceWidget from './_components/SourceWidget';
+import LocationWidget from './_components/LocationWidget';
+import DevicesWidget from './_components/DevicesWidget';
 
 
 const WebsiteDetail = () => {
@@ -51,6 +52,12 @@ const WebsiteDetail = () => {
     <div className="mt-10">
       <FormInputs websiteList={websiteList} setFormData={setFormData} setReloadData={() => GetWebsiteAnalyticalDetail()}/>
       <PageViewAnalytics websiteInfo={websiteInfo} loading={loading} analyticType={formData?.analyticsType}/>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
+        <SourceWidget websiteAnalytics={websiteInfo?.analytics} loading={loading}/>
+        <LocationWidget websiteAnalytics={websiteInfo?.analytics} loading={loading}/>
+        <DevicesWidget websiteAnalytics={websiteInfo?.analytics} loading={loading}/>
+      </div>
     </div>
   )
 }

@@ -89,7 +89,6 @@ const PageViewAnalytics = ({websiteInfo,loading,analyticType}:props) => {
             <div>
                 <Skeleton className="w-full h-80 rounded-2px"/>
             </div>
-
         }
     </div>
   )
