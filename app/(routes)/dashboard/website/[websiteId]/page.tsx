@@ -1,6 +1,6 @@
 "use client"
 
-import { WebsiteInfoType, WebsiteType } from '@/configs/type';
+import { LiveUserType, WebsiteInfoType, WebsiteType } from '@/configs/type';
 import axios from 'axios';
 import { useParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
@@ -16,6 +16,7 @@ const WebsiteDetail = () => {
     const {websiteId}=useParams();
     const [websiteList,setWebsiteList]=useState<WebsiteType[]>([]);
     const [websiteInfo,setWebsiteInfo]=useState<WebsiteInfoType|null>();
+    const [liveUser,setLiveUser]=useState<LiveUserType[]>([]);
     const [loading,setLoading]=useState<boolean>(false)
     const [formData,setFormData]=useState<any>({
         analyticsType:'hourly',
@@ -42,7 +43,14 @@ const WebsiteDetail = () => {
         console.log('WebsiteResult: ',websiteResult?.data);
         setWebsiteInfo(websiteResult?.data[0]);
         setLoading(false);
+        GetLiveUsers();
     }
+
+    const GetLiveUsers = async () => {
+      const result = await axios.get(`/api/live?websiteId=${websiteId}`);
+      console.log('Live Users:', result.data);
+      setLiveUser(result?.data);
+    };
 
     useEffect(() => {
       GetWebsiteAnalyticalDetail();
@@ -51,7 +59,7 @@ const WebsiteDetail = () => {
   return (
     <div className="mt-10">
       <FormInputs websiteList={websiteList} setFormData={setFormData} setReloadData={() => GetWebsiteAnalyticalDetail()}/>
-      <PageViewAnalytics websiteInfo={websiteInfo} loading={loading} analyticType={formData?.analyticsType}/>
+      <PageViewAnalytics websiteInfo={websiteInfo} loading={loading} analyticType={formData?.analyticsType} liveUserCount={liveUser?.length}/>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
         <SourceWidget websiteAnalytics={websiteInfo?.analytics} loading={loading}/>
