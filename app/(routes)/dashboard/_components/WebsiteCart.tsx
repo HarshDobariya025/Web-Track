@@ -82,11 +82,11 @@ const WebsiteCart = ({websiteInfo}:Props) => {
                         
                         <Area
                         dataKey="count"
-                        type="natural"
+                        type="monotone"
                         fill="var(--color-primary)"
-                        fillOpacity={0}
+                        fillOpacity={0.3}
                         stroke="var(--color-primary)"
-                        strokeWidth={3}
+                        strokeWidth={2}
                         />
                         {/* <ChartLegend content={<ChartLegendContent />} />   */}
                     </AreaChart>
