@@ -67,14 +67,6 @@ const WebsiteCart = ({websiteInfo}:Props) => {
                           bottom: 12,
                         }}
                     >
-                        {/* <CartesianGrid vertical={false} /> */}
-                        {/* <XAxis
-                        dataKey="month"
-                        tickLine={false}
-                        axisLine={false}
-                        tickMargin={8}
-                        tickFormatter={(value) => value.slice(0, 3)}
-                        /> */}
                         <ChartTooltip
                         cursor={false}
                         content={<ChartTooltipContent indicator="line" />}
@@ -88,7 +80,6 @@ const WebsiteCart = ({websiteInfo}:Props) => {
                         stroke="var(--color-primary)"
                         strokeWidth={3}
                         />
-                        {/* <ChartLegend content={<ChartLegendContent />} />   */}
                     </AreaChart>
                 </ChartContainer>
 
