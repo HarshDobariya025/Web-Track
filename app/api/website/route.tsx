@@ -27,6 +27,15 @@ export async function POST(req:NextRequest){
     return NextResponse.json(result);
 }
 
+export async function DELETE(req:NextRequest){
+    const {websiteId}=await req.json();
+    const user=await currentUser();
+
+    const result = await db.delete(websitesTable).where(
+        and( eq(websitesTable.websiteId,websiteId), eq(websitesTable.userEmail,user?.primaryEmailAddress?.emailAddress as string))
+    )
+    return NextResponse.json({message:'Record Deleted!'});
+}
 
 /* ---------------------------------------------
    SAFE TIMEZONE VALIDATOR (IANA ONLY)
@@ -76,21 +85,21 @@ export async function GET(req: NextRequest) {
        WEBSITE ONLY
     --------------------------------------------- */
     if (websiteOnly === "true") {
-        // if (websiteId) {
-        //     const websites = await db
-        //         .select()
-        //         .from(websitesTable)
-        //         .where(
-        //             and(
-        //                 eq(
-        //                     websitesTable.userEmail,
-        //                     user.primaryEmailAddress!.emailAddress
-        //                 ),
-        //                 eq(websitesTable.websiteId, websiteId)
-        //             )
-        //         );
-        //     return NextResponse.json(websites[0]);
-        // }
+        if (websiteId) {
+            const websites = await db
+                .select()
+                .from(websitesTable)
+                .where(
+                    and(
+                        eq(
+                            websitesTable.userEmail,
+                            user.primaryEmailAddress!.emailAddress
+                        ),
+                        eq(websitesTable.websiteId, websiteId)
+                    )
+                );
+            return NextResponse.json(websites[0]);
+        }
 
         const websites = await db
             .select()
