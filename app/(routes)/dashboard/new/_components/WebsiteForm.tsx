@@ -55,8 +55,10 @@ const WebsiteForm = () => {
 
         // console.log(result.data);
         setLoading(false);
+        route.replace('/dashboard');
     }
 
+    
   return (
     <div>
         <Card>
