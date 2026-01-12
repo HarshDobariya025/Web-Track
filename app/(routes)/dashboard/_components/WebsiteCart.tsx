@@ -43,7 +43,8 @@ const WebsiteCart = ({websiteInfo}:Props) => {
     },
     hourlyData[0],
   ]:hourlyData;
-
+ 
+  
   return (
     <Link href={`/dashboard/website/${websiteInfo?.website?.websiteId}`}>
         <Card>
