@@ -5,3 +5,30 @@ npx drizzle-kit studio    // run database locally
 
 //npm library
 npm i ua-parser-js    // get all info about devics(mobile, crom, desktop, ...)
+
+
+
+import Image from "next/image"
+import { motion } from "framer-motion"
+import { SignInButton, UserButton, useUser } from "@clerk/nextjs"
+import Link from "next/link"
+
+const { user } = useUser()
+<header className="fixed top-0 z-50 w-full border-b bg-white/70 backdrop-blur">
+        <nav className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Image src="/logo2.png" alt="logo" width={40} height={40} />
+            <span className="text-xl font-semibold">WebTrack</span>
+          </div>
+
+          {!user ? (
+            <SignInButton mode="modal" signUpForceRedirectUrl="/dashboard">
+              <button className="text-sm font-medium text-gray-700 hover:text-blue-600 transition">
+                Get Started
+              </button>
+            </SignInButton>
+          ) : (
+            <UserButton />
+          )}
+        </nav>
+      </header>

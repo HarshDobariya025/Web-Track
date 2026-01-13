@@ -3,6 +3,9 @@ import React from "react";
 import Image from "next/image";
 
 import { SignIn, SignInButton, UserButton, useUser } from "@clerk/nextjs";
+import { Button } from "@/components/ui/button";
+import { DollarSign } from "lucide-react";
+import Link from "next/link";
 
 function AppHeader() {
   const { user } = useUser();
@@ -14,18 +17,22 @@ function AppHeader() {
           className="relative  p-4 max-w-[85rem] w-full mx-auto px-4 sm:flex sm:items-center sm:justify-between sm:px-6 lg:px-8"
           aria-label="Global"
         >
-          <div className="flex items-center justify-between">
-            <div className="flex gap-2 items-center">
-              <Image
-                src={"/logo2.png"}
-                alt="logo"
-                width={150}
-                height={150}
-                className="h-10 w-10"
-              />
-              <h2 className="font-medium text-2xl">WebTrack</h2>
+          <Link href={`/`}>
+            <div className="flex items-center justify-between">
+              <div className="flex gap-2 items-center">
+                  <Image
+                    src={"/logo2.png"}
+                    alt="logo"
+                    width={150}
+                    height={150}
+                    className="h-10 w-10"
+                  />
+                  <h2 className="font-medium text-2xl">WebTrack</h2>
+              </div>
             </div>
-          </div>
+          </Link>
+
+
           <div
             id="navbar-collapse-with-animation"
             className="hs-collapse hidden overflow-hidden transition-all duration-300 basis-full grow sm:block"
@@ -52,7 +59,12 @@ function AppHeader() {
                   </div>
                 </SignInButton>
               ) : (
-                <UserButton />
+                <div className="flex items-center gap-2">
+                  <Link href={'/dashboard/pricing'}>
+                    <Button variant={'outline'}><DollarSign/></Button>
+                  </Link>
+                  <UserButton />
+                </div>
               )}
             </div>
           </div>

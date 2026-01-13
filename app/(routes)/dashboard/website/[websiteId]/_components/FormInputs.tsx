@@ -175,18 +175,15 @@ const FormInputs = ({websiteList,setFormData,setReloadData}:Props) => {
                 <Code2 className="mr-2 h-4 w-4" /> Code
               </Button>
             </AlertDialogTrigger>
-
-            <AlertDialogContent className="max-w-3xl w-full">
+            <AlertDialogContent className="max-w-2xl w-full">
               <AlertDialogHeader>
                 <AlertDialogTitle>Install the WebTrack Script</AlertDialogTitle>
-
                 <AlertDialogDescription asChild>
-                  <div className="w-full mt-5 relative">
-                    <p className="mb-2 text-sm text-muted-foreground">
+                  <div className="w-full relative">
+                    <p className="mb-3 text-sm text-muted-foreground">
                       Copy and paste the following script into the{" "}
                       <code>&lt;head&gt;</code> section of your website’s HTML
                     </p>
-
                     {/* Scroll Container */}
                     <div className="relative max-w-full overflow-x-auto rounded-lg border">
                       <SyntaxHighlighter
@@ -202,7 +199,6 @@ const FormInputs = ({websiteList,setFormData,setReloadData}:Props) => {
                       >
                         {Script}
                       </SyntaxHighlighter>
-
                       <Button
                         variant="outline"
                         size="icon"

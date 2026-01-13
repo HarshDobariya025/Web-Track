@@ -25,6 +25,7 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { Button } from '@/components/ui/button'
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 
 
 const WebsiteForm = () => {
@@ -44,6 +45,14 @@ const WebsiteForm = () => {
             timeZone: timeZone,
             enableLocalhostTracking: enableLocalhostTracking,
         })
+
+        if(result?.data?.msg=='limit'){
+            console.log("Upgrade your plan")
+            toast.error('Limit Exceed, Upgrade your plan');
+            setLoading(false);
+            route.replace('/dashboard/pricing');
+            return;
+        }
 
         if(result.data.data){   //existing domain 
             route.push('/dashboard/new?step=script&websiteId='+result?.data?.data?.websiteId+'&domain='+result?.data?.data?.domain);
