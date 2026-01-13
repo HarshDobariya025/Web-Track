@@ -13,6 +13,8 @@ import {
   type ChartConfig,
 } from "@/components/ui/chart"
 import Link from 'next/link'
+import { Separator } from '@/components/ui/separator'
+
 
 
 const chartConfig = {
@@ -46,47 +48,69 @@ const WebsiteCart = ({websiteInfo}:Props) => {
  
   
   return (
-    <Link href={`/dashboard/website/${websiteInfo?.website?.websiteId}`}>
-        <Card>
-            <CardHeader>
-                <CardTitle>
-                    <div className="flex items-center gap-1">
-                        <Globe className="h-9 w-9 p-2 rounded-md " />
-                        <h2 className="font-bold text-lg">{websiteInfo?.website?.domain.replace('https://','')}</h2>
-                    </div>
-                </CardTitle>
-            </CardHeader>
-            <CardContent>
-                <ChartContainer config={chartConfig} className="max-h-30 w-full">
-                    <AreaChart
-                        accessibilityLayer
-                        data={chartData}
-                        margin={{
-                          left: 12,
-                          right: 12,
-                          top: 12,
-                          bottom: 12,
-                        }}
-                    >
-                        <ChartTooltip
-                        cursor={false}
-                        content={<ChartTooltipContent indicator="line" />}
-                        />
-                        
-                        <Area
-                        dataKey="count"
-                        type="monotone"
-                        fill="var(--color-primary)"
-                        fillOpacity={0.0}
-                        stroke="var(--color-primary)"
-                        strokeWidth={3}
-                        />
-                    </AreaChart>
-                </ChartContainer>
+     <Link href={`/dashboard/website/${websiteInfo?.website?.websiteId}`}>
+      <Card className="group h-full rounded-xl border bg-background transition-all hover:-translate-y-1 hover:shadow-lg">
+        <CardHeader className="pb-4">
+          <CardTitle>
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-md bg-muted">
+                <Globe className="h-5 w-5 text-muted-foreground" />
+              </div>
 
-                <h2 className="text-sm mt-1"><strong>{websiteInfo?.analytics?.totalVisitors}</strong> Visiters</h2>
-            </CardContent>
-        </Card>
+              <h2 className="text-base font-semibold truncate max-w-[200px]">
+                {websiteInfo?.website?.domain.replace("https://", "")}
+              </h2>
+            </div>
+          </CardTitle>
+        </CardHeader>
+
+        <Separator />
+
+        <CardContent className="pt-5">
+          {/* Chart */}
+          <div className="rounded-lg bg-muted/30 p-2">
+            <ChartContainer
+              config={chartConfig}
+              className="h-[90px] w-full"
+            >
+              <AreaChart
+                accessibilityLayer
+                data={chartData}
+                margin={{
+                  left: 12,
+                  right: 12,
+                  top: 12,
+                  bottom: 12,
+                }}
+              >
+                <ChartTooltip
+                  cursor={false}
+                  content={<ChartTooltipContent indicator="line" />}
+                />
+
+                <Area
+                  dataKey="count"
+                  type="monotone"
+                  fill="var(--color-primary)"
+                  fillOpacity={0}
+                  stroke="var(--color-primary)"
+                  strokeWidth={2.5}
+                />
+              </AreaChart>
+            </ChartContainer>
+          </div>
+
+          {/* Visitors */}
+          <div className="mt-4 flex items-center justify-between">
+            <span className="text-sm text-muted-foreground">
+              Total Visitors
+            </span>
+            <span className="text-lg font-semibold">
+              {websiteInfo?.analytics?.totalVisitors}
+            </span>
+          </div>
+        </CardContent>
+      </Card>
     </Link>
   )
 }

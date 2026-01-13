@@ -1,6 +1,6 @@
 import { db } from "@/configs/db";
 import { pageViewTable, websitesTable } from "@/configs/schema";
-import { currentUser } from "@clerk/nextjs/server";
+import { auth, currentUser } from "@clerk/nextjs/server";
 import { and, desc, eq, gte, lte, sql } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 import { toZonedTime } from "date-fns-tz";
@@ -8,6 +8,17 @@ import { toZonedTime } from "date-fns-tz";
 export async function POST(req:NextRequest){
     const {websiteId, domain, timeZone, enableLocalhostTracking} = await req.json();
     const user=await currentUser();
+
+    // for user plan
+    const {has}=await auth();
+    const hasPremiumAccess = has({ plan: 'monthly' })
+    if(!hasPremiumAccess){
+        const result=await db.select().from(websitesTable)
+        .where( eq(websitesTable.userEmail,user?.primaryEmailAddress?.emailAddress as string));
+        if(result.length>0){
+            return NextResponse.json({msg:'limit'});
+        }
+    }
 
     //ckeck if  domain already exist
     const existingDomain= await db.select().from(websitesTable)
