@@ -78,7 +78,7 @@ const FormInputs = ({websiteList,setFormData,setReloadData}:Props) => {
 
   const GetWebsiteDetail= async () => {
           const result = await axios.get(`/api/website?websiteId=${websiteId}&websiteOnly=true`);
-          // console.log('Website settigs Detail: ', result.data);
+          console.log('Website dashboard FornInput Detail: ', result.data);
           setWebsiteDetail(result?.data);
   }
 
@@ -87,7 +87,7 @@ const FormInputs = ({websiteList,setFormData,setReloadData}:Props) => {
     defer
     data-website-id='${websiteId}'
     data-domain='${websiteDetail?.domain}'
-    sec"${process.env.NEXT_PUBLIC_HOST_URL}/analytics.js">
+    src"${process.env.NEXT_PUBLIC_HOST_URL}/analytics.js">
 </script>`;
 
   const onCopy = () => {
