@@ -57,17 +57,42 @@ const WebsiteDetail = () => {
     },[formData?.fromDate, formData?.toDate]);
 
   return (
-    <div className="mt-10">
-      <FormInputs websiteList={websiteList} setFormData={setFormData} setReloadData={() => GetWebsiteAnalyticalDetail()}/>
-      <PageViewAnalytics websiteInfo={websiteInfo} loading={loading} analyticType={formData?.analyticsType} liveUserCount={liveUser?.length}/>
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
-        <SourceWidget websiteAnalytics={websiteInfo?.analytics} loading={loading}/>
-        <LocationWidget websiteAnalytics={websiteInfo?.analytics} loading={loading}/>
-        <DevicesWidget websiteAnalytics={websiteInfo?.analytics} loading={loading}/>
+    <div className="mt-10 space-y-6">
+      {/* Filters / Controls */}
+      <FormInputs
+        websiteList={websiteList}
+        setFormData={setFormData}
+        setReloadData={() => GetWebsiteAnalyticalDetail()}
+      />
+
+      {/* Main Analytics */}
+      <PageViewAnalytics
+        websiteInfo={websiteInfo}
+        loading={loading}
+        analyticType={formData?.analyticsType}
+        liveUserCount={liveUser?.length}
+      />
+
+      {/* Widgets */}
+      <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-2">
+        <SourceWidget
+          websiteAnalytics={websiteInfo?.analytics}
+          loading={loading}
+        />
+
+        <LocationWidget
+          websiteAnalytics={websiteInfo?.analytics}
+          loading={loading}
+        />
+
+        <DevicesWidget
+          websiteAnalytics={websiteInfo?.analytics}
+          loading={loading}
+          />
       </div>
     </div>
   )
+
 }
 
 export default WebsiteDetail
