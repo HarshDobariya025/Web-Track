@@ -50,6 +50,7 @@
         RefParams
     }
 
+    // fetch('http://localhost:3000/api/track', {
     fetch('https://web-track-phi.vercel.app/api/track', {
         method: 'POST',
         headers: {
@@ -66,6 +67,7 @@
     const handleExit = () => {
         const exitTime = Math.floor(Date.now() / 1000);
         totalActiveTime += Math.floor(Date.now() / 1000) - activeTime;
+        // fetch('http://localhost:3000/api/track', {
         fetch('https://web-track-phi.vercel.app/api/track', {
             method: 'POST',
             keepalive: true,
@@ -82,13 +84,12 @@
                 exitUrl: window.location.href
             })
         })
-        // localStorage.clear(); // clear visitor ID on exit
     }
 
     window.addEventListener('beforeunload', handleExit);
-    // window.addEventListener('pagehide', handleExit);
 
     const sendLivePing = () => {
+        // fetch('http://localhost:3000/api/live', {
         fetch('https://web-track-phi.vercel.app/api/live', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
