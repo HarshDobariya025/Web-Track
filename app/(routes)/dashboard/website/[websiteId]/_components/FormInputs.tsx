@@ -82,12 +82,16 @@ const FormInputs = ({websiteList,setFormData,setReloadData}:Props) => {
           setWebsiteDetail(result?.data);
   }
 
+  useEffect(() => {
+    GetWebsiteDetail();
+  },[]);
+
   const Script = 
     `<script
     defer
     data-website-id='${websiteId}'
     data-domain='${websiteDetail?.domain}'
-    src"${process.env.NEXT_PUBLIC_HOST_URL}/analytics.js">
+    src="${process.env.NEXT_PUBLIC_HOST_URL}/analytics.js">
 </script>`;
 
   const onCopy = () => {
