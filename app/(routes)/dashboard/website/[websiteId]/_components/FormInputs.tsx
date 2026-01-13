@@ -170,32 +170,59 @@ const FormInputs = ({websiteList,setFormData,setReloadData}:Props) => {
       <div className="flex items-center gap-4">
         <div>
           <AlertDialog>
-              <AlertDialogTrigger asChild>
-                  <Button variant={'outline'}><Code2/> Code</Button>
-              </AlertDialogTrigger>
-              <AlertDialogContent>
-                  <AlertDialogHeader>
-                  <AlertDialogTitle>Install the WebTrack Script</AlertDialogTitle>
-                  <AlertDialogDescription>
-                    <div className="w-full mt-5 relative">
-                          <p>Copy and paste the following script into the <code>&lt;head&gt;</code> section of your website's HTML</p>
-                          <SyntaxHighlighter
-                              language="javascript"
-                              style={a11yDark}
-                              customStyle={{ borderRadius: 8 }}
-                              >
-                              {Script}
-                              </SyntaxHighlighter>
-                          <Button variant={'outline'} size={'icon'} onClick={onCopy} className="absolute top-11 right-0 m-3"><Copy/></Button>
-                      </div>
-                  </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction>Ok</AlertDialogAction>
-                  </AlertDialogFooter>
-              </AlertDialogContent>
+            <AlertDialogTrigger asChild>
+              <Button variant="outline">
+                <Code2 className="mr-2 h-4 w-4" /> Code
+              </Button>
+            </AlertDialogTrigger>
+
+            <AlertDialogContent className="max-w-3xl w-full">
+              <AlertDialogHeader>
+                <AlertDialogTitle>Install the WebTrack Script</AlertDialogTitle>
+
+                <AlertDialogDescription asChild>
+                  <div className="w-full mt-5 relative">
+                    <p className="mb-2 text-sm text-muted-foreground">
+                      Copy and paste the following script into the{" "}
+                      <code>&lt;head&gt;</code> section of your website’s HTML
+                    </p>
+
+                    {/* Scroll Container */}
+                    <div className="relative max-w-full overflow-x-auto rounded-lg border">
+                      <SyntaxHighlighter
+                        language="javascript"
+                        style={a11yDark}
+                        customStyle={{
+                          margin: 0,
+                          borderRadius: 0,
+                          minWidth: "100%",
+                          whiteSpace: "pre",
+                        }}
+                        wrapLongLines={false}
+                      >
+                        {Script}
+                      </SyntaxHighlighter>
+
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        onClick={onCopy}
+                        className="absolute top-2 right-2"
+                      >
+                        <Copy className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </div>
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction>Ok</AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
           </AlertDialog>
+
         </div>
 
         <Link href={'/dashboard/website/'+websiteId+'/settings'}>

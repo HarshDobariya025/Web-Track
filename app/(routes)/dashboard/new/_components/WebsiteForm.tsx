@@ -53,7 +53,7 @@ const WebsiteForm = () => {
             alert(result?.data?.message); //domain not beling to you
         }
 
-        // console.log(result.data);
+        console.log("New Website form data:"+result.data);
         setLoading(false);
         route.replace('/dashboard');
     }
@@ -137,7 +137,7 @@ const WebsiteForm = () => {
                                 <SelectItem value="clt">Chile Standard Time (CLT)</SelectItem>
                                 </SelectGroup>
                             </SelectContent>
-                            </Select>
+                        </Select>
                     </div>
 
                     <div className="mt-4 flex tems-center gap-1">
