@@ -1,36 +1,149 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# WEBTRACK – Website Analytics Platform
 
-## Getting Started
+WEBTRACK is a modern, privacy-focused website analytics platform designed to help developers and businesses understand how users interact with their websites in real time. It provides detailed insights into traffic, user behavior, devices, and locations using a lightweight tracking script and a clean dashboard experience.
 
-First, run the development server:
+The project is built using **Next.js**, **Neon PostgreSQL**, **Clerk Authentication**, **Tailwind CSS**, and **shadcn/ui**, ensuring scalability, performance, and a polished user interface.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Project Overview
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+WEBTRACK allows users to track one or more websites by simply adding a generated script to their website’s `<head>` tag. Once integrated, the platform starts collecting analytics data and presents it through interactive dashboards and visualizations.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The system is designed with a clear workflow:
+1. User authentication
+2. Website onboarding
+3. Script integration
+4. Real-time and historical analytics
+5. Website management and billing-based limits
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+## Application Workflow
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 1. Landing Page
+The landing page is the first point of interaction for users. It introduces WEBTRACK, highlights its features, and provides options to sign up or log in. Authentication is handled securely using Clerk.  
+After successful authentication, users are automatically redirected to the dashboard.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+### 2. Dashboard (Website Onboarding)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+If a user has **not added any website**, the dashboard prompts them to add one by filling in:
+- Website domain
+- Preferred time zone
+- Option to enable localhost tracking (useful for development environments)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+After submission:
+- A unique tracking script is generated
+- The user is instructed to place this script inside the `<head>` tag of their website
+- Once the script is added, WEBTRACK begins collecting analytics data
+
+If websites already exist, the dashboard displays a list of tracked websites and quick access to their analytics.
+
+
+### 3. Detailed Website Analytics
+
+Each website has a dedicated analytics page that provides in-depth insights.
+
+#### Filters & Controls
+Users can filter analytics data using:
+- Today
+- Date
+- Custom date range
+- Hourly view
+
+Additional controls include:
+- Refresh analytics data
+- View tracking script
+- Open website settings
+
+
+#### Core Metrics
+The analytics dashboard displays key performance metrics such as:
+- Total visitors
+- Total page views
+- Total active time
+- Average active time
+- Live users
+
+These metrics update dynamically based on selected filters.
+
+
+#### Visual Analytics
+- Interactive charts and graphs
+- Data visualization changes according to selected date or range
+- Designed for quick interpretation and clarity
+
+
+#### Traffic Sources & Referrals
+- Identify where users are coming from
+- Understand referral performance
+- Track direct, referral, and external traffic
+
+
+#### Geographic Analytics
+- Country-level access data
+- City and region breakdown
+- Helps understand audience distribution globally
+
+
+#### Device & Platform Analytics
+- Operating systems (Windows, macOS, Linux, Android, iOS, etc.)
+- Browsers (Chrome, Firefox, Safari, Edge, etc.)
+- Device types (Desktop, Mobile, Tablet)
+
+
+### 4. Website Settings
+
+Each website includes a settings page where users can:
+- View and copy the tracking script
+- Access the public WEBTRACK ID
+- Manage website domain information
+- Save configuration changes
+- Permanently delete the website and its analytics data
+
+
+## Pricing Model
+
+WEBTRACK follows a simple and scalable pricing structure:
+
+- **Free Trial**
+  - 7-day trial period
+  - Track up to **1 website**
+
+- **Premium Plan**
+  - Track **unlimited websites**
+  - Ideal for developers, agencies, and businesses managing multiple projects
+
+
+## Technology Stack
+
+- **Frontend & Backend**: Next.js (App Router)
+- **Database**: Neon PostgreSQL
+- **Authentication**: Clerk
+- **Styling**: Tailwind CSS
+- **UI Components**: shadcn/ui
+
+This stack ensures fast rendering, secure authentication, scalable data handling, and a modern user experience.
+
+
+## Key Design Principles
+
+- Privacy-first analytics approach
+- Lightweight tracking script
+- No unnecessary data collection
+- Developer-friendly setup
+- Clean and intuitive UI
+
+
+## Use Cases
+
+- Personal websites and portfolios
+- SaaS products
+- Blogs and content platforms
+- Agency-managed client websites
+- Startup analytics without heavy third-party tools
+
+
+## Conclusion
+
+WEBTRACK is a complete, developer-friendly analytics solution that balances simplicity, performance, and detailed insights. Its modular design, modern stack, and scalable pricing make it suitable for both individual developers and growing teams.
+
